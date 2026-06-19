@@ -6,8 +6,8 @@ import { useAnalytics } from '../hooks/useAnalytics'
 import { getEvents, getCauses, getCorridors } from '../api/client'
 import { useAlertFeed } from '../context/AlertFeedContext'
 import { Panel } from '../components/ui/Panel'
-import { Badge } from '../components/ui/Badge'
-import { Skeleton } from '../components/ui/Skeleton'
+import { Badge } from '../components/ui/badge'
+import { Skeleton } from '../components/ui/skeleton'
 import { ErrorBlock } from '../components/ui/ErrorBlock'
 import { CityRiskIndex } from '../components/dashboard/CityRiskIndex'
 import { AlertFeed } from '../components/dashboard/AlertFeed'
@@ -101,15 +101,15 @@ export function Dashboard() {
 
   useEffect(() => {
     setEventsLoading(true)
-    getEvents({ limit: 20, priority: 'High' }).then(d => {
-      if (d?.events) {
-        setEvents(d.events)
+    getEvents({ limit: 20, priority: 'High' }).then(res => {
+      if (res.success && res.data?.events) {
+        setEvents(res.data.events)
         setApiConnected(true)
       } else {
         setEvents(DEMO_HOTSPOTS.slice(0, 20).map((h, i) => ({
           corridor: h.corridor, event_cause: h.event_cause, start_datetime: h.start_datetime, priority: 'High', id: `DEMO${i}`,
         })))
-        setApiConnected(false)
+        setApiConnected(!res.fallback)
       }
       setEventsLoading(false)
     })
@@ -304,8 +304,8 @@ function IncidentLog() {
 
   useEffect(() => {
     Promise.all([getCauses(), getCorridors()]).then(([c, co]) => {
-      if (c?.causes) setCauses(c.causes)
-      if (co?.corridors) setCorridors(co.corridors)
+      if (c.success && c.data?.causes) setCauses(c.data.causes)
+      if (co.success && co.data?.corridors) setCorridors(co.data.corridors)
     })
   }, [])
 
@@ -316,10 +316,10 @@ function IncidentLog() {
     if (filters.event_cause) params.event_cause = filters.event_cause
     if (filters.priority) params.priority = filters.priority
     if (filters.corridor) params.corridor = filters.corridor
-    const d = await getEvents(params)
-    if (d) {
-      setEvents(d.events || [])
-      setTotal(d.total || 0)
+    const res = await getEvents(params)
+    if (res.success && res.data) {
+      setEvents(res.data.events || [])
+      setTotal(res.data.total || 0)
     } else {
       setError(true)
     }

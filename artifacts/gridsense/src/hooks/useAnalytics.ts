@@ -13,18 +13,19 @@ export function useAnalytics() {
     setLoading(true)
     setError(false)
     const [s, a] = await Promise.all([getSummary(), getAnalytics()])
-    const hasSummary = !!(s?.data)
-    const hasAnalytics = !!(a?.data)
 
-    if (!hasSummary && !hasAnalytics) {
+    const summaryData = s.success && s.data?.data ? s.data.data : null
+    const analyticsData = a.success && a.data?.data ? a.data.data : null
+
+    if (!summaryData && !analyticsData) {
       setSummary(DEMO_SUMMARY as unknown as Record<string, unknown>)
       setAnalytics(DEMO_ANALYTICS as unknown as Record<string, unknown>)
       setIsDemo(true)
       setError(false)
     } else {
-      setSummary((hasSummary ? s!.data : DEMO_SUMMARY) as Record<string, unknown>)
-      setAnalytics((hasAnalytics ? a!.data : DEMO_ANALYTICS) as Record<string, unknown>)
-      setIsDemo(!hasSummary || !hasAnalytics)
+      setSummary((summaryData || DEMO_SUMMARY) as Record<string, unknown>)
+      setAnalytics((analyticsData || DEMO_ANALYTICS) as Record<string, unknown>)
+      setIsDemo(!summaryData || !analyticsData)
       setError(false)
     }
     setLoading(false)

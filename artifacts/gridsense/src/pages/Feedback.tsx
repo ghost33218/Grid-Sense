@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { postFeedback, getFeedback } from '../api/client'
 import { OpsButton } from '../components/ui/OpsButton'
-import { Skeleton } from '../components/ui/Skeleton'
+import { Skeleton } from '../components/ui/skeleton'
 import { useToast } from '../context/ToastContext'
 import { useAlertFeed } from '../context/AlertFeedContext'
 
@@ -88,10 +88,10 @@ export function Feedback() {
   const { addAlert } = useAlertFeed()
 
   useEffect(() => {
-    getFeedback().then(d => {
-      if (d) {
-        setRecords(d.records || [])
-        setAnalytics({ total: d.total || 0, accuracy: typeof d.accuracy === 'number' ? d.accuracy * 100 : 0 })
+    getFeedback().then(res => {
+      if (res.success && res.data) {
+        setRecords(res.data.records as FeedbackRecord[] || [])
+        setAnalytics({ total: res.data.total || 0, accuracy: typeof res.data.accuracy === 'number' ? res.data.accuracy * 100 : 0 })
       }
       setLoading(false)
     })
@@ -107,15 +107,15 @@ export function Feedback() {
       personnel_deployed: Number(form.personnel_deployed),
       notes: form.notes,
     })
-    if (res?.success) {
+    if (res.success && res.data?.success) {
       setSuccess(true)
       setSuccessData({ accuracy: analytics?.accuracy })
       showToast('Feedback submitted — model accuracy updated', 'success')
       addAlert('Officer feedback logged — model accuracy updated')
-      getFeedback().then(d => {
-        if (d) {
-          setRecords(d.records || [])
-          setAnalytics({ total: d.total, accuracy: d.accuracy * 100 })
+      getFeedback().then(fb => {
+        if (fb.success && fb.data) {
+          setRecords(fb.data.records as FeedbackRecord[] || [])
+          setAnalytics({ total: fb.data.total, accuracy: fb.data.accuracy * 100 })
         }
       })
     } else {

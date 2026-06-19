@@ -5,7 +5,7 @@ import { usePredict } from '../hooks/usePredict'
 import { useMeta } from '../hooks/useMeta'
 import { predict } from '../api/client'
 import { OpsButton } from '../components/ui/OpsButton'
-import { Skeleton } from '../components/ui/Skeleton'
+import { Skeleton } from '../components/ui/skeleton'
 import { CornerMarks } from '../components/ui/CornerMarks'
 import { useToast } from '../context/ToastContext'
 import { useAlertFeed } from '../context/AlertFeedContext'
@@ -95,6 +95,7 @@ export function Predict() {
   const [simLoading, setSimLoading] = useState(false)
 
   const runScenario = useCallback(async (scenarioForm: Record<string, unknown>) => {
+    if (loading) return
     const start = getTodayDatetime(scenarioForm.startHour as number, scenarioForm.startMin as number)
     const end = getTodayDatetime((scenarioForm.startHour as number) + 3, scenarioForm.startMin as number)
     const { startHour, startMin, ...rest } = scenarioForm
@@ -105,7 +106,7 @@ export function Predict() {
       if (pred.congestion_label === 'High') addAlert(`HIGH risk predicted on ${rest.corridor}`)
       addAlert(`Recommendation generated — ${pred.personnel_recommended} officers, ${pred.barricades_recommended} barricades`)
     }
-  }, [loadDemo, submitPrediction, showToast, addAlert])
+  }, [loadDemo, submitPrediction, showToast, addAlert, loading])
 
   useEffect(() => {
     if (searchParams.get('judge') === '1' && !judgeRan.current) {
@@ -160,17 +161,15 @@ export function Predict() {
           predict({ ...base, requires_road_closure: true }),
           predict({ ...base, requires_road_closure: false }),
         ])
-        setSimA(a?.prediction || null)
-        setSimB(b?.prediction || null)
+        setSimA(a.success && a.data?.prediction ? a.data.prediction : null)
+        setSimB(b.success && b.data?.prediction ? b.data.prediction : null)
       } else {
-        const flipped = formData.event_type === 'planned' ? 'unplanned' : 'planned'
         const [a, b] = await Promise.all([
           predict({ ...base, event_type: 'planned' }),
           predict({ ...base, event_type: 'unplanned' }),
         ])
-        setSimA(a?.prediction || null)
-        setSimB(b?.prediction || null)
-        void flipped
+        setSimA(a.success && a.data?.prediction ? a.data.prediction : null)
+        setSimB(b.success && b.data?.prediction ? b.data.prediction : null)
       }
       showToast('Scenario comparison complete', 'info')
       addAlert('What-if simulation completed — comparison ready')

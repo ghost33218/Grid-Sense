@@ -3,9 +3,9 @@ import { motion } from 'framer-motion'
 import { MapContainer, TileLayer, CircleMarker, Popup, useMap } from 'react-leaflet'
 import type { Map as LeafletMap } from 'leaflet'
 import { getHotspots } from '../api/client'
-import { Skeleton } from '../components/ui/Skeleton'
+import { Skeleton } from '../components/ui/skeleton'
 import { CornerMarks } from '../components/ui/CornerMarks'
-import { Badge } from '../components/ui/Badge'
+import { Badge } from '../components/ui/badge'
 import { DataRow } from '../components/ui/DataRow'
 import { DEMO_HOTSPOTS } from '../data/demoData'
 import { formatDuration } from '../utils/predictUtils'
@@ -64,9 +64,9 @@ export function Map() {
   const mapRef = useRef<LeafletMap | null>(null)
 
   useEffect(() => {
-    getHotspots().then(d => {
-      if (d?.hotspots?.length) {
-        setHotspots(d.hotspots)
+    getHotspots().then(res => {
+      if (res.success && res.data?.hotspots?.length) {
+        setHotspots(res.data.hotspots)
       } else {
         setHotspots(DEMO_HOTSPOTS.map(h => ({
           ...h,

@@ -33,7 +33,7 @@ export function TopBar({ isDemo }: TopBarProps) {
   const pageSubtitle = PAGE_SUBTITLES[location.pathname] || ''
 
   useEffect(() => {
-    const poll = () => checkHealth().then(d => setApiOk(!!d?.status))
+    const poll = () => checkHealth().then(res => setApiOk(res.success && !!res.data?.status))
     poll()
     const interval = setInterval(poll, 30000)
     return () => clearInterval(interval)

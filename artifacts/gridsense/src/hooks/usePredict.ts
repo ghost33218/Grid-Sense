@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useRef } from 'react'
 import { predict } from '../api/client'
 
 const defaultForm = {
@@ -23,6 +23,7 @@ export function usePredict() {
   const [result, setResult] = useState<Record<string, unknown> | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
+  const abortRef = useRef<AbortController | null>(null)
 
   const updateField = useCallback((key: string, value: unknown) => {
     setFormData(prev => ({ ...prev, [key]: value }))
@@ -34,20 +35,46 @@ export function usePredict() {
     setError(false)
   }, [])
 
+  const cancelPending = useCallback(() => {
+    if (abortRef.current) {
+      abortRef.current.abort()
+      abortRef.current = null
+    }
+  }, [])
+
   const submitPrediction = useCallback(async (overrideForm?: Partial<FormData>) => {
+    cancelPending()
+    const controller = new AbortController()
+    abortRef.current = controller
+
     const payload = overrideForm ? { ...formData, ...overrideForm } : formData
     setLoading(true)
     setError(false)
     const res = await predict(payload)
-    if (res?.prediction) {
-      setResult(res.prediction)
+    if (controller.signal.aborted) {
+      return null
+    }
+    abortRef.current = null
+
+    if (res.success && res.data?.prediction) {
+      setResult(res.data.prediction as Record<string, unknown>)
       setLoading(false)
-      return res.prediction as Record<string, unknown>
+      return res.data.prediction as Record<string, unknown>
     }
     setError(true)
     setLoading(false)
     return null
-  }, [formData])
+  }, [formData, cancelPending])
 
-  return { formData, result, loading, error, updateField, submitPrediction, loadDemo, setFormData }
+  return {
+    formData,
+    result,
+    loading,
+    error,
+    updateField,
+    submitPrediction,
+    loadDemo,
+    setFormData,
+    cancelPending,
+  }
 }

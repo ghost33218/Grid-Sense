@@ -3,9 +3,9 @@ import { useSearchParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { getSimilar } from '../api/client'
 import { OpsButton } from '../components/ui/OpsButton'
-import { Skeleton } from '../components/ui/Skeleton'
+import { Skeleton } from '../components/ui/skeleton'
 import { DataRow } from '../components/ui/DataRow'
-import { Badge } from '../components/ui/Badge'
+import { Badge } from '../components/ui/badge'
 import { ErrorBlock } from '../components/ui/ErrorBlock'
 import { useToast } from '../context/ToastContext'
 import { useAlertFeed } from '../context/AlertFeedContext'
@@ -57,11 +57,11 @@ export function Similarity() {
     if (id) setEventId(id)
     setLoading(true)
     setError(false)
-    const d = await getSimilar(target)
-    if (d?.similar_events?.length) {
-      setResults(d.similar_events.slice(0, 3))
-      showToast(`Found ${d.similar_events.length} similar events`, 'success')
-      addAlert(`${Math.min(d.similar_events.length, 3)} similar historical events matched`)
+    const res = await getSimilar(target)
+    if (res.success && res.data?.similar_events?.length) {
+      setResults(res.data.similar_events.slice(0, 3) as SimilarEvent[])
+      showToast(`Found ${res.data.similar_events.length} similar events`, 'success')
+      addAlert(`${Math.min(res.data.similar_events.length, 3)} similar historical events matched`)
     } else {
       setError(true)
       setResults([])

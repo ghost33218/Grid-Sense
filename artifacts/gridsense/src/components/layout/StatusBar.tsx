@@ -20,14 +20,14 @@ export function StatusBar({ summary }: StatusBarProps) {
       style={{ height: 32 }}
     >
       <div className="flex items-center gap-5">
-        {[
-          ['INCIDENTS', typeof totalEvents === 'number' ? totalEvents.toLocaleString() : totalEvents],
+        {([
+          ['INCIDENTS', typeof totalEvents === 'number' ? totalEvents.toLocaleString() : String(totalEvents)],
           ['HIGH RISK', String(high)],
           ['ROAD CLOSURES', String(roadClosures)],
           ['CORRIDORS', String(corridors)],
-          ['EST. OFFICERS', officersEst],
+          ['EST. OFFICERS', String(officersEst)],
           ['F1', '63.8%'],
-        ].map(([label, val], i, arr) => (
+        ] as [string, string][]).map(([label, val], i, arr) => (
           <span key={label} className="flex items-center gap-5">
             <span className="text-[9px] font-mono">
               <span className="text-[#6B6860]">{label} </span>

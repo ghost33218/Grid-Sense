@@ -9,9 +9,9 @@ export function useMeta() {
 
   useEffect(() => {
     Promise.all([getCorridors(), getZones(), getCauses()]).then(([c, z, ca]) => {
-      if (c?.corridors) setCorridors(c.corridors)
-      if (z?.zones) setZones(z.zones)
-      if (ca?.causes) setCauses(ca.causes)
+      if (c.success && c.data?.corridors) setCorridors(c.data.corridors)
+      if (z.success && z.data?.zones) setZones(z.data.zones)
+      if (ca.success && ca.data?.causes) setCauses(ca.data.causes)
       setLoading(false)
     })
   }, [])
