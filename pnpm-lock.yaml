@@ -209,6 +209,9 @@ importers:
 
   artifacts/gridsense:
     dependencies:
+      '@types/leaflet':
+        specifier: ^1.9.17
+        version: 1.9.21
       axios:
         specifier: ^1.18.0
         version: 1.18.0
@@ -310,31 +313,28 @@ importers:
         specifier: ^0.5.15
         version: 0.5.20(tailwindcss@4.3.0)
       '@tailwindcss/vite':
-        specifier: 'catalog:'
+        specifier: ^4.1.14
         version: 4.3.0(vite@7.3.3(@types/node@25.6.2)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.21.0)(yaml@2.8.4))
       '@tanstack/react-query':
-        specifier: 'catalog:'
+        specifier: ^5.90.21
         version: 5.100.9(react@19.1.0)
       '@types/node':
-        specifier: 'catalog:'
+        specifier: ^25.3.3
         version: 25.6.2
       '@types/react':
-        specifier: 'catalog:'
+        specifier: ^19.2.0
         version: 19.2.14
       '@types/react-dom':
-        specifier: 'catalog:'
+        specifier: ^19.2.0
         version: 19.2.3(@types/react@19.2.14)
       '@vitejs/plugin-react':
-        specifier: 'catalog:'
+        specifier: ^5.0.4
         version: 5.2.0(vite@7.3.3(@types/node@25.6.2)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.21.0)(yaml@2.8.4))
-      '@workspace/api-client-react':
-        specifier: workspace:*
-        version: link:../../lib/api-client-react
       class-variance-authority:
-        specifier: 'catalog:'
+        specifier: ^0.7.1
         version: 0.7.1
       clsx:
-        specifier: 'catalog:'
+        specifier: ^2.1.1
         version: 2.1.1
       cmdk:
         specifier: ^1.1.1
@@ -346,25 +346,25 @@ importers:
         specifier: ^8.6.0
         version: 8.6.0(react@19.1.0)
       framer-motion:
-        specifier: 'catalog:'
+        specifier: 12.38.0
         version: 12.38.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       input-otp:
         specifier: ^1.4.2
         version: 1.4.2(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       lucide-react:
-        specifier: 'catalog:'
+        specifier: ^0.545.0
         version: 0.545.0(react@19.1.0)
       next-themes:
         specifier: ^0.4.6
         version: 0.4.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       react:
-        specifier: 'catalog:'
+        specifier: 19.1.0
         version: 19.1.0
       react-day-picker:
         specifier: ^9.11.1
         version: 9.14.0(react@19.1.0)
       react-dom:
-        specifier: 'catalog:'
+        specifier: 19.1.0
         version: 19.1.0(react@19.1.0)
       react-hook-form:
         specifier: ^7.55.0
@@ -382,10 +382,10 @@ importers:
         specifier: ^2.0.7
         version: 2.0.7(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       tailwind-merge:
-        specifier: 'catalog:'
+        specifier: ^3.3.1
         version: 3.5.0
       tailwindcss:
-        specifier: 'catalog:'
+        specifier: ^4.1.14
         version: 4.3.0
       tw-animate-css:
         specifier: ^1.4.0
@@ -394,13 +394,13 @@ importers:
         specifier: ^1.1.2
         version: 1.1.2(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       vite:
-        specifier: 'catalog:'
+        specifier: ^7.3.2
         version: 7.3.3(@types/node@25.6.2)(jiti@2.7.0)(lightningcss@1.32.0)(tsx@4.21.0)(yaml@2.8.4)
       wouter:
         specifier: ^3.3.5
         version: 3.10.0(react@19.1.0)
       zod:
-        specifier: 'catalog:'
+        specifier: ^3.25.76
         version: 3.25.76
 
   artifacts/mockup-sandbox:
@@ -1662,11 +1662,17 @@ packages:
   '@types/express@5.0.6':
     resolution: {integrity: sha512-sKYVuV7Sv9fbPIt/442koC7+IIwK5olP1KWeD88e/idgoJqDm3JV/YUiPwkoKK92ylff2MGxSz1CSjsXelx0YA==}
 
+  '@types/geojson@7946.0.16':
+    resolution: {integrity: sha512-6C8nqWur3j98U6+lXDfTUWIfgvZU+EumvpHKcYjujKH7woYyLj2sUmff0tRhrqM7BohUw7Pz3ZB1jj2gW9Fvmg==}
+
   '@types/hast@3.0.4':
     resolution: {integrity: sha512-WPs+bbQw5aCj+x6laNGWLH3wviHtoCv/P3+otBhbOhJgG8qtpdAMlTCxLtsTWA7LH1Oh/bFCHsBn0TPS5m30EQ==}
 
   '@types/http-errors@2.0.5':
     resolution: {integrity: sha512-r8Tayk8HJnX0FztbZN7oVqGccWgw98T/0neJphO91KkmOzug1KkofZURD4UaD5uH8AqcFLfdPErnBod0u71/qg==}
+
+  '@types/leaflet@1.9.21':
+    resolution: {integrity: sha512-TbAd9DaPGSnzp6QvtYngntMZgcRk+igFELwR2N99XZn7RXUdKgsXMR+28bUO0rPsWp8MIu/f47luLIQuSLYv/w==}
 
   '@types/node@25.6.2':
     resolution: {integrity: sha512-sokuT28dxf9JT5Kady1fsXOvI4HVpjZa95NKT5y9PNTIrs2AsobR4GFAA90ZG8M+nxVRLysCXsVj6eGC7Vbrlw==}
@@ -4422,11 +4428,17 @@ snapshots:
       '@types/express-serve-static-core': 5.1.1
       '@types/serve-static': 2.2.0
 
+  '@types/geojson@7946.0.16': {}
+
   '@types/hast@3.0.4':
     dependencies:
       '@types/unist': 3.0.3
 
   '@types/http-errors@2.0.5': {}
+
+  '@types/leaflet@1.9.21':
+    dependencies:
+      '@types/geojson': 7946.0.16
 
   '@types/node@25.6.2':
     dependencies:
